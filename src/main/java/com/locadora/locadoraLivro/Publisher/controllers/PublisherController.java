@@ -1,68 +1,49 @@
 package com.locadora.locadoraLivro.Publisher.controllers;
 
-import com.locadora.locadoraLivro.Publisher.DTO.PublisherRecordDto;
-import com.locadora.locadoraLivro.Publisher.models.PublisherModel;
-import com.locadora.locadoraLivro.Publisher.repositories.PublisherRepository;
+import com.locadora.locadoraLivro.Publisher.DTOs.CreatePublisherRequestDTO;
+import com.locadora.locadoraLivro.Publisher.DTOs.PublisherResponseDTO;
+import com.locadora.locadoraLivro.Publisher.mappers.PublisherMapper;
+import com.locadora.locadoraLivro.Publisher.services.PublisherServices;
+import com.locadora.locadoraLivro.Renters.DTOs.RenterResponseDTO;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class PublisherController {
 
     @Autowired
-    PublisherRepository publisherRepository;
+    PublisherMapper publisherMapper;
 
-    // POST
+    @Autowired
+    PublisherServices publisherServices;
+
     @PostMapping("/publisher")
-    public ResponseEntity<PublisherModel> savePublisher(@RequestBody @Valid PublisherRecordDto publisherRecordDTO) {
-        var publisherModel = new PublisherModel();
-        BeanUtils.copyProperties(publisherRecordDTO, publisherModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(publisherRepository.save(publisherModel));
+    public ResponseEntity<Void> create(@RequestBody @Valid CreatePublisherRequestDTO data) {
+        return publisherServices.create(data);
     }
 
-    // GET
     @GetMapping("/publisher")
-    public ResponseEntity<List<PublisherModel>> getAllPublishers() {
-        return ResponseEntity.status(HttpStatus.OK).body(publisherRepository.findAll());
+    public ResponseEntity<List<PublisherResponseDTO>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(publisherMapper.toPublisherResponseList(publisherServices.findAll()));
     }
 
-    // GET ID
     @GetMapping("/publisher/{id}")
-    public ResponseEntity<Object> getOnePublisher(@PathVariable(value = "id") int id) {
-        Optional<PublisherModel> publisher0 = publisherRepository.findById(id);
-        if (publisher0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Publisher not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(publisher0.get());
+    public ResponseEntity<PublisherResponseDTO> getById(@PathVariable(value = "id") int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(publisherMapper.toPublisherResponse(publisherServices.findById(id).orElseThrow(() -> new RuntimeException("Renter not found"))));
     }
 
-    // PUT
     @PutMapping("/publisher/{id}")
-    public ResponseEntity<Object> updatePublisher(@PathVariable(value = "id") int id, @RequestBody @Valid PublisherRecordDto publisherRecordDto) {
-        Optional<PublisherModel> publisher0 = publisherRepository.findById(id);
-        if (publisher0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Publisher not found.");
-        }
-        var publisherModel = publisher0.get();
-        BeanUtils.copyProperties(publisherRecordDto, publisherModel);
-        return ResponseEntity.status(HttpStatus.OK).body(publisherRepository.save(publisherModel));
+    public ResponseEntity<Object> update(@PathVariable("id") int id, @RequestBody @Valid CreatePublisherRequestDTO createPublisherRequestDTO) {
+        return publisherServices.update(id, createPublisherRequestDTO);
     }
 
-    // DEL
     @DeleteMapping("/publisher/{id}")
-    public ResponseEntity<Object> deletePublisher(@PathVariable(value = "id") int id) {
-        Optional<PublisherModel> publisher0 = publisherRepository.findById(id);
-        if (publisher0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Publisher not found.");
-        }
-        publisherRepository.delete(publisher0.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Publisher deleted sucessfully.");
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") int id) {
+        return publisherServices.delete(id);
     }
 }

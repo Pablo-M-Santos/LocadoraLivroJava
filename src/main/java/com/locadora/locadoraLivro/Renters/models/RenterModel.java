@@ -1,5 +1,4 @@
-package com.locadora.locadoraLivro.Publisher.models;
-
+package com.locadora.locadoraLivro.Renters.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,14 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Entity
-@Table(name = "tb_publishers")
-public class PublisherModel implements UserDetails {
+@Table(name = "tb_renters")
+public class RenterModel implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,13 +25,15 @@ public class PublisherModel implements UserDetails {
     private String name;
     private String email;
     private String telephone;
-    private String site;
+    private String address;
+    private String cpf;
 
-    public PublisherModel(String name, String email, String telephone, String site) {
+    public RenterModel(String name, String email, String telephone, String address, String cpf) {
         this.name = name;
         this.email = email;
         this.telephone = telephone;
-        this.site = site;
+        this.address = address;
+        this.cpf = cpf;
     }
 
     @Override
@@ -71,6 +71,3 @@ public class PublisherModel implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 }
-
-
-

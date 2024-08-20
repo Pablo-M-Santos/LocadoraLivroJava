@@ -1,12 +1,11 @@
+package com.locadora.locadoraLivro.Renters.repositories;
 
-package com.locadora.locadoraLivro.Publisher.repositories;
-
-import com.locadora.locadoraLivro.Publisher.models.PublisherModel;
+import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PublisherRepository  extends JpaRepository<PublisherModel, Integer> {
+public interface RenterRepository extends JpaRepository<RenterModel, Integer> {
     UserDetails findByName(String name);
 }
