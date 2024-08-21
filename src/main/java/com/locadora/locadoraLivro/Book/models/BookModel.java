@@ -16,7 +16,7 @@ import com.locadora.locadoraLivro.Publisher.models.PublisherModel;
 public class BookModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String author;

@@ -4,7 +4,7 @@ package com.locadora.locadoraLivro.Users.controllers;
 import com.locadora.locadoraLivro.Users.configurations.TokenService;
 import com.locadora.locadoraLivro.Users.DTOs.AuthenticationDTO;
 import com.locadora.locadoraLivro.Users.DTOs.LoginResponseDTO;
-import com.locadora.locadoraLivro.Users.models.UserModel;
+import com.locadora.locadoraLivro.Users.DTOs.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

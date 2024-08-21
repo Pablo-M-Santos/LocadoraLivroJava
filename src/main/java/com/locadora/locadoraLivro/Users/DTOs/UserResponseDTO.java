@@ -1,6 +1,6 @@
 package com.locadora.locadoraLivro.Users.DTOs;
 
-import com.locadora.locadoraLivro.Users.models.UserRoleEnum;
+import com.locadora.locadoraLivro.Users.DTOs.models.UserRoleEnum;
 import lombok.Builder;
 
 @Builder

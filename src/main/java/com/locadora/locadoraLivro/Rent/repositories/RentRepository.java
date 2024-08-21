@@ -1,11 +1,11 @@
-package com.locadora.locadoraLivro.Users.repositories;
+package com.locadora.locadoraLivro.Rent.repositories;
 
-import com.locadora.locadoraLivro.Users.DTOs.models.UserModel;
+import com.locadora.locadoraLivro.Rent.models.RentModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserModel, Integer> {
+public interface RentRepository extends JpaRepository<RentModel, Integer> {
     UserDetails findByName(String name);
 }

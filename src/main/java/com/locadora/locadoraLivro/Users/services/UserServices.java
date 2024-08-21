@@ -2,7 +2,7 @@ package com.locadora.locadoraLivro.Users.services;
 
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Users.DTOs.CreateUserRequestDTO;
-import com.locadora.locadoraLivro.Users.models.UserModel;
+import com.locadora.locadoraLivro.Users.DTOs.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;

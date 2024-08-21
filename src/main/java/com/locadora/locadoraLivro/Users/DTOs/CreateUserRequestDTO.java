@@ -1,6 +1,6 @@
 package com.locadora.locadoraLivro.Users.DTOs;
 
-import com.locadora.locadoraLivro.Users.models.UserRoleEnum;
+import com.locadora.locadoraLivro.Users.DTOs.models.UserRoleEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Email;
