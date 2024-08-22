@@ -1,12 +1,12 @@
 package com.locadora.locadoraLivro.Rent.models;
 
-import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.locadora.locadoraLivro.Book.models.BookModel;
+import com.locadora.locadoraLivro.Renters.models.RenterModel;
 
 import java.time.LocalDate;
 
@@ -27,9 +27,8 @@ public class RentModel {
     private BookModel book;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "renters_id")
     private RenterModel renter;
-
     private LocalDate rentalDate;
     private LocalDate returnDate;
 

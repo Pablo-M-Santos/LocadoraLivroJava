@@ -1,7 +1,7 @@
 package com.locadora.locadoraLivro.Users.mappers;
 
 import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
-import com.locadora.locadoraLivro.Users.DTOs.models.UserModel;
+import com.locadora.locadoraLivro.Users.models.UserModel;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public record RentResponseDTO(
         int id,
         int bookId,
-        int renterId,
+        int rentId,
         LocalDate rentalDate,
         LocalDate returnDate
 ) {

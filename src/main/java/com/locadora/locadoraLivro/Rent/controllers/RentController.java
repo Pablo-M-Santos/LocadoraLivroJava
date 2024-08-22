@@ -22,7 +22,7 @@ public class RentController {
     private RentServices rentServices;
 
     @PostMapping("/rent")
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateRentRequestDTO data) {
+    public ResponseEntity<String> create(@RequestBody @Valid CreateRentRequestDTO data) {
         return rentServices.create(data);
     }
 

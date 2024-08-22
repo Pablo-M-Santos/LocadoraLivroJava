@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public record CreateRentRequestDTO(
         @NotNull(message = "Book ID cannot be null") Integer bookId,
-        @NotNull(message = "Customer ID cannot be null") Integer customerId,
+        @NotNull(message = "Renter ID cannot be null") Integer renterId,
         @NotNull(message = "Rental Date cannot be null") LocalDate rentalDate,
         @NotNull(message = "Return Date cannot be null") LocalDate returnDate
 ) {

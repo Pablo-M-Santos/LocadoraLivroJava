@@ -1,6 +1,6 @@
 package com.locadora.locadoraLivro.Users.repositories;
 
-import com.locadora.locadoraLivro.Users.DTOs.models.UserModel;
+import com.locadora.locadoraLivro.Users.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;

@@ -20,7 +20,7 @@ public class RentMapper {
                 .builder()
                 .id(model.getId())
                 .bookId(model.getBook().getId())
-                .renterId(model.getRenter().getId())
+                .rentId(model.getRenter().getId())
                 .rentalDate(model.getRentalDate())
                 .returnDate(model.getReturnDate())
                 .build();
