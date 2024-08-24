@@ -2,6 +2,7 @@ package com.locadora.locadoraLivro.Users.services;
 
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Users.DTOs.CreateUserRequestDTO;
+import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -9,7 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,16 +23,15 @@ public class UserServices {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     public ResponseEntity<Void> create(@Valid CreateUserRequestDTO data) {
         if (userRepository.findByName(data.name()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        String encodedPassword = passwordEncoder.encode(data.password());
-
-        UserModel newUser = new UserModel(data.name(), data.email(), encodedPassword, data.role());
+        String encryptedPassword = passwordEncoder.encode(data.password());
+        UserModel newUser = new UserModel(data.name(), data.email(), encryptedPassword, data.role());
         userRepository.save(newUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -47,18 +47,13 @@ public class UserServices {
         return userRepository.findById(id);
     }
 
-    public ResponseEntity<Object> update(int id, @Valid CreateUserRequestDTO createUserRequestDTO){
+    public ResponseEntity<Object> update(int id, @Valid UpdateUserRequestDTO updateUserRequestDTO){
         Optional<UserModel> response = userRepository.findById(id);
         if(response.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         var userModel = response.get();
-
-        if (createUserRequestDTO.password() != null) {
-            userModel.setPassword(passwordEncoder.encode(createUserRequestDTO.password()));
-        }
-
-        BeanUtils.copyProperties(createUserRequestDTO, userModel, "password");
+        BeanUtils.copyProperties(updateUserRequestDTO, userModel);
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(userModel));
     }
 

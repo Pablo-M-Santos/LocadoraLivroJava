@@ -1,6 +1,5 @@
 package com.locadora.locadoraLivro.Users.controllers;
 
-
 import com.locadora.locadoraLivro.Users.configurations.TokenService;
 import com.locadora.locadoraLivro.Users.DTOs.AuthenticationDTO;
 import com.locadora.locadoraLivro.Users.DTOs.LoginResponseDTO;
