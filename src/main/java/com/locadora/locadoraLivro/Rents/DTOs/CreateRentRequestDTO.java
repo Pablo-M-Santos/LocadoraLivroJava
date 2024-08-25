@@ -1,12 +1,12 @@
-package com.locadora.locadoraLivro.Rents.DTOs;
-
-import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-
-public record CreateRentRequestDTO(
-        @NotNull(message = "Book ID cannot be null") Integer bookId,
-        @NotNull(message = "Renter ID cannot be null") Integer renterId,
-        @NotNull(message = "Rental Date cannot be null") LocalDate rentalDate,
-        @NotNull(message = "Return Date cannot be null") LocalDate returnDate
-) {
-}
+//package com.locadora.locadoraLivro.Rents.DTOs;
+//
+//import com.fasterxml.jackson.annotation.JsonFormat;
+//import jakarta.validation.constraints.NotNull;
+//
+//import java.time.LocalDate;
+//
+//public record CreateRentRequestDTO(
+//        @NotNull int renterId,
+//        @NotNull int bookId,
+//        @NotNull @JsonFormat(pattern = "yyyy-MM-dd") LocalDate deadLine) {
+//}

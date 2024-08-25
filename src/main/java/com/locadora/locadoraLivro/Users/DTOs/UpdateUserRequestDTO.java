@@ -7,6 +7,6 @@ import jakarta.validation.constraints.NotNull;
 public record UpdateUserRequestDTO(
         @NotBlank String name,
         @NotBlank String email,
-        String password,
+        @NotBlank String password,
         @NotNull UserRoleEnum role) {
 }

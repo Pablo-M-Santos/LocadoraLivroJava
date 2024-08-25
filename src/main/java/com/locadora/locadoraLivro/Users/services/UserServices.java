@@ -3,6 +3,8 @@ package com.locadora.locadoraLivro.Users.services;
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Users.DTOs.CreateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
+import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
+import com.locadora.locadoraLivro.Users.mappers.UserMapper;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -21,6 +23,9 @@ public class UserServices {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -47,15 +52,18 @@ public class UserServices {
         return userRepository.findById(id);
     }
 
-    public ResponseEntity<Object> update(int id, @Valid UpdateUserRequestDTO updateUserRequestDTO){
+    public ResponseEntity<UserResponseDTO> update(int id, @Valid UpdateUserRequestDTO updateUserRequestDTO) {
         Optional<UserModel> response = userRepository.findById(id);
-        if(response.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        if (response.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         var userModel = response.get();
         BeanUtils.copyProperties(updateUserRequestDTO, userModel);
-        return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(userModel));
+        userRepository.save(userModel);
+        UserResponseDTO userResponseDTO = userMapper.toUserResponse(userModel);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
     }
+
 
     public ResponseEntity<Object> delete(int id){
         Optional<UserModel> response = userRepository.findById(id);
