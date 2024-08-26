@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +22,8 @@ public class RenterServices {
     @Autowired
     private RenterRepository renterRepository;
 
-    public ResponseEntity<Void> create(@Valid CreateRenterRequestDTO data) {
-        if (renterRepository.findByName(data.name()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateRenterRequestDTO data) {
 
         RenterModel newRenter = new RenterModel(data.name(), data.email(), data.telephone(), data.address(), data.cpf());
         renterRepository.save(newRenter);

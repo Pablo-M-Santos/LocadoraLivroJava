@@ -8,5 +8,6 @@ public record UserResponseDTO(
         int id,
         String name,
         String email,
-        UserRoleEnum role) {
+        UserRoleEnum role
+){
 }

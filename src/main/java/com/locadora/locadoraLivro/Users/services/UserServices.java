@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +31,8 @@ public class UserServices {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public ResponseEntity<Void> create(@Valid CreateUserRequestDTO data) {
-        if (userRepository.findByName(data.name()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequestDTO data) {
 
         String encryptedPassword = passwordEncoder.encode(data.password());
         UserModel newUser = new UserModel(data.name(), data.email(), encryptedPassword, data.role());
@@ -57,8 +56,16 @@ public class UserServices {
         if (response.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+
         var userModel = response.get();
-        BeanUtils.copyProperties(updateUserRequestDTO, userModel);
+        BeanUtils.copyProperties(updateUserRequestDTO, userModel, "password");
+
+
+        if (updateUserRequestDTO.password() != null && !updateUserRequestDTO.password().isBlank()) {
+            String encryptedPassword = passwordEncoder.encode(updateUserRequestDTO.password());
+            userModel.setPassword(encryptedPassword);
+        }
+
         userRepository.save(userModel);
         UserResponseDTO userResponseDTO = userMapper.toUserResponse(userModel);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
