@@ -1,7 +1,7 @@
-package com.locadora.locadoraLivro.Books.mappers;
+package Books.mappers;
 
-import com.locadora.locadoraLivro.Books.DTOs.BookResponseDTO;
-import com.locadora.locadoraLivro.Books.models.BookModel;
+import Books.models.BookModel;
+import Books.DTOs.BookResponseDTO;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 

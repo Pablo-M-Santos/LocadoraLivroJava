@@ -4,6 +4,7 @@ import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Users.DTOs.CreateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
+import com.locadora.locadoraLivro.Users.Validation.UserValidation;
 import com.locadora.locadoraLivro.Users.mappers.UserMapper;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
@@ -32,7 +33,12 @@ public class UserServices {
     private BCryptPasswordEncoder passwordEncoder;
 
 
+    @Autowired
+    private UserValidation userEmailValidation;
+
+
     public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequestDTO data) {
+        userEmailValidation.validateEmail(data);
 
         String encryptedPassword = passwordEncoder.encode(data.password());
         UserModel newUser = new UserModel(data.name(), data.email(), encryptedPassword, data.role());

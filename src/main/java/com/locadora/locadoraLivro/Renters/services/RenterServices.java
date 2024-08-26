@@ -2,6 +2,11 @@ package com.locadora.locadoraLivro.Renters.services;
 
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Renters.DTOs.CreateRenterRequestDTO;
+import com.locadora.locadoraLivro.Renters.Validation.CpfValidation;
+import com.locadora.locadoraLivro.Renters.Validation.PhoneFormatter;
+import com.locadora.locadoraLivro.Renters.Validation.RenterEmailValidation;
+import com.locadora.locadoraLivro.Renters.Validation.TelephoneFormatter;
+import com.locadora.locadoraLivro.Renters.Validation.TelephoneValidator;
 import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import com.locadora.locadoraLivro.Renters.repositories.RenterRepository;
 import jakarta.validation.Valid;
@@ -22,10 +27,23 @@ public class RenterServices {
     @Autowired
     private RenterRepository renterRepository;
 
+    @Autowired
+    private RenterEmailValidation renterEmailValidation;
+
+    @Autowired
+    private TelephoneValidator telephoneValidator;
+
+    @Autowired
+    private CpfValidation cpfValidation;
 
     public ResponseEntity<Void> create(@RequestBody @Valid CreateRenterRequestDTO data) {
+        renterEmailValidation.validateEmail(data.email());
+        telephoneValidator.(data.telephone());
+        cpfValidation.validateCpf(data.cpf());
 
-        RenterModel newRenter = new RenterModel(data.name(), data.email(), data.telephone(), data.address(), data.cpf());
+        String formattedTelephone = TelephoneFormatter.formatPhone(data.telephone());
+
+        RenterModel newRenter = new RenterModel(data.name(), data.email(), formattedTelephone, data.address(), data.cpf());
         renterRepository.save(newRenter);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

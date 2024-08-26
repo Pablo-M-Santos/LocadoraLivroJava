@@ -1,7 +1,8 @@
 package com.locadora.locadoraLivro.Renters.DTOs;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
 public record UpdateRenterRequestDTO(
@@ -9,17 +10,16 @@ public record UpdateRenterRequestDTO(
         String name,
 
         @Email(message = "Email must be valid.")
-        @NotBlank(message = "Email cannot be empty or contain only spaces.")
+        @NotEmpty(message = "Email cannot be empty.")
         String email,
 
-        @NotBlank(message = "Telephone cannot be empty")
+        @NotBlank(message = "Telephone cannot be empty or contain only spaces.")
         String telephone,
 
-        @NotBlank(message = "Address cannot be empty")
-        String address
+        @NotBlank(message = "Address cannot be empty or contain only spaces.")
+        String address,
 
-//        @CPF
-//        @NotBlank(message = "cpf cannot be null")
-//        String cpf;
-) {}
-
+        @CPF(message = "The CPF must be valid.")
+        String cpf
+) {
+}

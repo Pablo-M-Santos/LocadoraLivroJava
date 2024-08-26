@@ -1,4 +1,4 @@
-package com.locadora.locadoraLivro.Books.models;
+package Books.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

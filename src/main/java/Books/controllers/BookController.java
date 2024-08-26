@@ -1,9 +1,9 @@
-package com.locadora.locadoraLivro.Books.controllers;
+package Books.controllers;
 
-import com.locadora.locadoraLivro.Books.DTOs.CreateBookRequestDTO;
-import com.locadora.locadoraLivro.Books.DTOs.BookResponseDTO;
-import com.locadora.locadoraLivro.Books.mappers.BookMapper;
-import com.locadora.locadoraLivro.Books.services.BookServices;
+import Books.DTOs.CreateBookRequestDTO;
+import Books.DTOs.BookResponseDTO;
+import Books.mappers.BookMapper;
+import Books.services.BookServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
