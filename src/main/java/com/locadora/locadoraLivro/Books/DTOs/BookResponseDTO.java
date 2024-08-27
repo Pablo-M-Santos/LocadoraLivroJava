@@ -1,4 +1,4 @@
-package Books.DTOs;
+package com.locadora.locadoraLivro.Books.DTOs;
 
 import lombok.Builder;
 

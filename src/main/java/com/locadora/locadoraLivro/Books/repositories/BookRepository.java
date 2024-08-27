@@ -1,6 +1,6 @@
-package Books.repositories;
+package com.locadora.locadoraLivro.Books.repositories;
 
-import Books.models.BookModel;
+import com.locadora.locadoraLivro.Books.models.BookModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;

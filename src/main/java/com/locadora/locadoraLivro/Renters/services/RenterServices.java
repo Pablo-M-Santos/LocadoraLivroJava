@@ -2,11 +2,9 @@ package com.locadora.locadoraLivro.Renters.services;
 
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Renters.DTOs.CreateRenterRequestDTO;
+import com.locadora.locadoraLivro.Renters.DTOs.UpdateRenterRequestDTO;
 import com.locadora.locadoraLivro.Renters.Validation.CpfValidation;
-import com.locadora.locadoraLivro.Renters.Validation.PhoneFormatter;
 import com.locadora.locadoraLivro.Renters.Validation.RenterEmailValidation;
-import com.locadora.locadoraLivro.Renters.Validation.TelephoneFormatter;
-import com.locadora.locadoraLivro.Renters.Validation.TelephoneValidator;
 import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import com.locadora.locadoraLivro.Renters.repositories.RenterRepository;
 import jakarta.validation.Valid;
@@ -31,19 +29,13 @@ public class RenterServices {
     private RenterEmailValidation renterEmailValidation;
 
     @Autowired
-    private TelephoneValidator telephoneValidator;
-
-    @Autowired
     private CpfValidation cpfValidation;
 
     public ResponseEntity<Void> create(@RequestBody @Valid CreateRenterRequestDTO data) {
         renterEmailValidation.validateEmail(data.email());
-        telephoneValidator.(data.telephone());
         cpfValidation.validateCpf(data.cpf());
 
-        String formattedTelephone = TelephoneFormatter.formatPhone(data.telephone());
-
-        RenterModel newRenter = new RenterModel(data.name(), data.email(), formattedTelephone, data.address(), data.cpf());
+        RenterModel newRenter = new RenterModel(data.name(), data.email(), data.telephone(), data.address(), data.cpf());
         renterRepository.save(newRenter);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -59,15 +51,16 @@ public class RenterServices {
         return renterRepository.findById(id);
     }
 
-    public ResponseEntity<Object> update(int id, @Valid CreateRenterRequestDTO createRenterRequestDTO){
+    public ResponseEntity<Object> update(int id, @Valid UpdateRenterRequestDTO updateRenterRequestDTO) {
         Optional<RenterModel> response = renterRepository.findById(id);
-        if(response.isEmpty()){
+        if (response.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Renter not found");
         }
         var renterModel = response.get();
-        BeanUtils.copyProperties(createRenterRequestDTO, renterModel);
+        BeanUtils.copyProperties(updateRenterRequestDTO, renterModel);
         return ResponseEntity.status(HttpStatus.OK).body(renterRepository.save(renterModel));
     }
+
 
     public ResponseEntity<Object> delete(int id){
         Optional<RenterModel> response = renterRepository.findById(id);

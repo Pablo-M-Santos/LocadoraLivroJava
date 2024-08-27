@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PublisherRepository  extends JpaRepository<PublisherModel, Integer> {
     UserDetails findByName(String name);
+    PublisherModel findByEmail(String email);
+
 }

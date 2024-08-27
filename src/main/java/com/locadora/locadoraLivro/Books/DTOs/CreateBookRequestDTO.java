@@ -1,4 +1,4 @@
-package Books.DTOs;
+package com.locadora.locadoraLivro.Books.DTOs;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

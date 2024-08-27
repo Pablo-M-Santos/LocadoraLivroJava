@@ -8,5 +8,6 @@ public record PublisherResponseDTO(
         String name,
         String email,
         String telephone,
-        String site) {
+        String site
+) {
 }

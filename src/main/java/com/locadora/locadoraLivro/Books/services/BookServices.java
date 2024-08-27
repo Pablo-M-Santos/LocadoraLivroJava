@@ -1,8 +1,8 @@
-package Books.services;
+package com.locadora.locadoraLivro.Books.services;
 
-import Books.DTOs.CreateBookRequestDTO;
-import Books.models.BookModel;
-import Books.repositories.BookRepository;
+import com.locadora.locadoraLivro.Books.DTOs.CreateBookRequestDTO;
+import com.locadora.locadoraLivro.Books.models.BookModel;
+import com.locadora.locadoraLivro.Books.repositories.BookRepository;
 import com.locadora.locadoraLivro.Publishers.repositories.PublisherRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;

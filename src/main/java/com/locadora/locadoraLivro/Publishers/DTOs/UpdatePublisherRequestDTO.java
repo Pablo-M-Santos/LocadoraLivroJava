@@ -1,11 +1,10 @@
-package com.locadora.locadoraLivro.Renters.DTOs;
+package com.locadora.locadoraLivro.Publishers.DTOs;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Email;
-import org.hibernate.validator.constraints.br.CPF;
 
-public record UpdateRenterRequestDTO(
+public record UpdatePublisherRequestDTO(
         @NotBlank(message = "The name cannot be empty or contain only spaces.")
         String name,
 
@@ -16,10 +15,7 @@ public record UpdateRenterRequestDTO(
         @NotBlank(message = "Telephone cannot be empty or contain only spaces.")
         String telephone,
 
-        @NotBlank(message = "Address cannot be empty or contain only spaces.")
-        String address,
-
-        @CPF(message = "Invalid CPF format.")
-        String cpf
+        @NotEmpty(message = "SITE cannot be empty")
+        String site
 ) {
 }

@@ -1,6 +1,5 @@
 package com.locadora.locadoraLivro.Renters.DTOs;
 
-import com.locadora.locadoraLivro.Renters.Validation.ValidTelephone;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Email;
@@ -14,13 +13,13 @@ public record CreateRenterRequestDTO(
         @NotEmpty(message = "Email cannot be empty.")
         String email,
 
-        @ValidTelephone(message = "Telephone must be in the format 'XX X####-####'.")
+        @NotBlank(message = "Telephone cannot be empty or contain only spaces.")
         String telephone,
 
         @NotBlank(message = "Address cannot be empty or contain only spaces.")
         String address,
 
-        @CPF(message = "The CPF must be valid.")
+        @CPF(message = "Invalid CPF format.")
         String cpf
 ) {
 }
