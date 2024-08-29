@@ -27,6 +27,8 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
 /*                      .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/renter").permitAll()
                         .requestMatchers(HttpMethod.POST, "/rent").permitAll()

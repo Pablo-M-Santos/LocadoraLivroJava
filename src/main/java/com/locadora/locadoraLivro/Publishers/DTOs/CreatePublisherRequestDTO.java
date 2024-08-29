@@ -16,7 +16,7 @@ public record CreatePublisherRequestDTO(
         @NotBlank(message = "Telephone cannot be empty or contain only spaces.")
         String telephone,
 
-        @URL(message = "eu gritei AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        @URL(message = "URL invalid")
         @NotEmpty(message = "SITE cannot be empty")
         String site
 ) {

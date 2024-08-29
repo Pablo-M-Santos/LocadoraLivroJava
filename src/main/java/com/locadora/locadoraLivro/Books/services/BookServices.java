@@ -1,11 +1,15 @@
 package com.locadora.locadoraLivro.Books.services;
 
 import com.locadora.locadoraLivro.Books.DTOs.CreateBookRequestDTO;
+import com.locadora.locadoraLivro.Books.DTOs.UpdateBookRecordDTO;
+import com.locadora.locadoraLivro.Books.Validation.BookValidation;
 import com.locadora.locadoraLivro.Books.models.BookModel;
 import com.locadora.locadoraLivro.Books.repositories.BookRepository;
+import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
+import com.locadora.locadoraLivro.Publishers.models.PublisherModel;
 import com.locadora.locadoraLivro.Publishers.repositories.PublisherRepository;
+import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,40 +26,65 @@ public class BookServices {
 
     @Autowired
     private PublisherRepository publisherRepository;
+    @Autowired
+    BookValidation bookValidation;
+
 
     public ResponseEntity<Void> create(@Valid CreateBookRequestDTO data) {
-        var publisher = publisherRepository.findById(data.publisherId()).orElseThrow(() -> new RuntimeException("Publisher not found"));
+
+        bookValidation.validLaunchDate(data);
+        bookValidation.validTotalQuantity(data);
+
+        PublisherModel publisher = publisherRepository.findById(data.publisherId()).orElseThrow(() -> new IllegalArgumentException("Publisher not found"));
+
         BookModel newBook = new BookModel(data.name(), data.author(), data.launchDate(), data.totalQuantity(), publisher);
         bookRepository.save(newBook);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     public List<BookModel> findAll() {
-        return bookRepository.findAll();
+        List<BookModel> book = bookRepository.findAllByIsDeletedFalse();
+        if (book.isEmpty()) throw new ModelNotFoundException();
+        return book;
     }
 
     public Optional<BookModel> findById(int id) {
         return bookRepository.findById(id);
     }
 
-    public ResponseEntity<Object> update(int id, @Valid CreateBookRequestDTO createBookRequestDTO) {
+    public ResponseEntity<Object> update(int id, @Valid UpdateBookRecordDTO updateBookRecordDTO) {
         Optional<BookModel> response = bookRepository.findById(id);
-        if (response.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
-        }
+        if (response.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+
+        bookValidation.validTotalQuantityUpdate(updateBookRecordDTO);
+        bookValidation.validLaunchDateUpdate(updateBookRecordDTO);
+
+        PublisherModel publisher = publisherRepository.findById(updateBookRecordDTO.publisherId()).orElseThrow(() -> new IllegalArgumentException("Publisher not found"));
+
         var bookModel = response.get();
-        var publisher = publisherRepository.findById(createBookRequestDTO.publisherId()).orElseThrow(() -> new RuntimeException("Publisher not found"));
-        BeanUtils.copyProperties(createBookRequestDTO, bookModel);
+        bookModel.setName(updateBookRecordDTO.name());
+        bookModel.setAuthor(updateBookRecordDTO.author());
+        bookModel.setLaunchDate(updateBookRecordDTO.launchDate());
+        bookModel.setTotalQuantity(updateBookRecordDTO.totalQuantity());
         bookModel.setPublisher(publisher);
-        return ResponseEntity.status(HttpStatus.OK).body(bookRepository.save(bookModel));
+
+        bookRepository.save(bookModel);
+        return ResponseEntity.status(HttpStatus.OK).body(bookModel);
     }
 
     public ResponseEntity<Object> delete(int id) {
         Optional<BookModel> response = bookRepository.findById(id);
-        if (response.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
-        }
+        if (response.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+
+        bookValidation.validDeleteBook(id);
+
         bookRepository.delete(response.get());
+
+        BookModel book = response.get();
+
+        book.setDeleted(true);
+        bookRepository.save(book);
         return ResponseEntity.status(HttpStatus.OK).body("Book deleted successfully");
     }
 }

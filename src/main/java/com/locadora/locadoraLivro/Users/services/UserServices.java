@@ -6,7 +6,9 @@ import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
 import com.locadora.locadoraLivro.Users.Validation.UserValidation;
 import com.locadora.locadoraLivro.Users.mappers.UserMapper;
+import com.locadora.locadoraLivro.Users.models.PasswordResetToken;
 import com.locadora.locadoraLivro.Users.models.UserModel;
+import com.locadora.locadoraLivro.Users.repositories.PasswordResetTokenRepository;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -14,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServices {
@@ -36,6 +40,8 @@ public class UserServices {
     @Autowired
     private UserValidation userEmailValidation;
 
+    @Autowired
+    private PasswordResetTokenRepository resetTokenRepository;
 
     public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequestDTO data) {
         userEmailValidation.validateEmail(data);
@@ -86,4 +92,55 @@ public class UserServices {
         userRepository.delete(response.get());
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
+
+    public String createPasswordResetToken(String email) {
+        Optional<UserModel> userOptional = Optional.ofNullable(userRepository.findByEmail(email));
+        if (!userOptional.isPresent()) {
+            return null;
+        }
+
+        UserModel user = userOptional.get();
+
+        // Verifica se já existe um token para o usuário
+        PasswordResetToken existingToken = resetTokenRepository.findByUser(user);
+        if (existingToken != null) {
+            // Se o token já existir e não estiver expirado, retorna o token existente
+            if (!existingToken.isExpired()) {
+                return existingToken.getToken();
+            }
+            // Caso o token esteja expirado, exclui o token antigo
+            resetTokenRepository.delete(existingToken);
+        }
+
+        // Cria um novo token
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken newToken = new PasswordResetToken(token, user);
+        resetTokenRepository.save(newToken);
+
+        return token;
+    }
+
+
+
+    public boolean validatePasswordResetToken(String token) {
+        PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
+        return resetToken != null && !resetToken.isExpired();
+    }
+
+    public boolean resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
+        if (resetToken == null || resetToken.isExpired()) {
+            return false;
+        }
+
+        UserModel user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        // Exclui o token após a redefinição da senha
+        resetTokenRepository.delete(resetToken);
+
+        return true;
+    }
+
 }

@@ -27,6 +27,7 @@ public class RenterModel implements UserDetails{
     private String telephone;
     private String address;
     private String cpf;
+    private boolean isDeleted;
 
     public RenterModel(String name, String email, String telephone, String address, String cpf) {
         this.name = name;
@@ -34,6 +35,7 @@ public class RenterModel implements UserDetails{
         this.telephone = telephone;
         this.address = address;
         this.cpf = cpf;
+        this.isDeleted = false;
     }
 
     @Override

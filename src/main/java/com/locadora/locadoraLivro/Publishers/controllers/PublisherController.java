@@ -2,6 +2,7 @@ package com.locadora.locadoraLivro.Publishers.controllers;
 
 import com.locadora.locadoraLivro.Publishers.DTOs.CreatePublisherRequestDTO;
 import com.locadora.locadoraLivro.Publishers.DTOs.PublisherResponseDTO;
+import com.locadora.locadoraLivro.Publishers.DTOs.UpdatePublisherRequestDTO;
 import com.locadora.locadoraLivro.Publishers.mappers.PublisherMapper;
 import com.locadora.locadoraLivro.Publishers.services.PublisherServices;
 import jakarta.validation.Valid;
@@ -37,8 +38,8 @@ public class PublisherController {
     }
 
     @PutMapping("/publisher/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") int id, @RequestBody @Valid CreatePublisherRequestDTO createPublisherRequestDTO) {
-        return publisherServices.update(id, createPublisherRequestDTO);
+    public ResponseEntity<Object> update(@PathVariable(value = "id") int id, @RequestBody @Valid UpdatePublisherRequestDTO updatePublisherRequestDTO) {
+        return publisherServices.update(id, updatePublisherRequestDTO);
     }
 
     @DeleteMapping("/publisher/{id}")

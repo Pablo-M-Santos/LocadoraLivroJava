@@ -15,9 +15,8 @@ public class PublisherMapper {
         return publisherList.stream().map(this::toPublisherResponse).toList();
     }
 
-    public PublisherResponseDTO toPublisherResponse(PublisherModel model){
-        return PublisherResponseDTO
-                .builder()
+    public PublisherResponseDTO toPublisherResponse(PublisherModel model) {
+        return PublisherResponseDTO.builder()
                 .id(model.getId())
                 .name(model.getName())
                 .email(model.getEmail())

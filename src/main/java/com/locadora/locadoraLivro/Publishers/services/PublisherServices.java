@@ -2,6 +2,7 @@ package com.locadora.locadoraLivro.Publishers.services;
 
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
 import com.locadora.locadoraLivro.Publishers.DTOs.CreatePublisherRequestDTO;
+import com.locadora.locadoraLivro.Publishers.DTOs.UpdatePublisherRequestDTO;
 import com.locadora.locadoraLivro.Publishers.models.PublisherModel;
 import com.locadora.locadoraLivro.Publishers.repositories.PublisherRepository;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class PublisherServices {
     }
 
     public List<PublisherModel> findAll() {
-        List<PublisherModel> publisher = publisherRepository.findAll();
+        List<PublisherModel> publisher = publisherRepository.findAllByIsDeletedFalse();
         if (publisher.isEmpty()) throw new ModelNotFoundException();
         return publisher;
     }
@@ -42,22 +43,25 @@ public class PublisherServices {
         return publisherRepository.findById(id);
     }
 
-    public ResponseEntity<Object> update(int id, @Valid CreatePublisherRequestDTO createPublisherRequestDTO){
+    public ResponseEntity<Object> update(int id, @Valid UpdatePublisherRequestDTO updatePublisherRequestDTO){
         Optional<PublisherModel> response = publisherRepository.findById(id);
-        if(response.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Renter not found");
-        }
+        if(response.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Publisher not found");
+
         var publisherModel = response.get();
-        BeanUtils.copyProperties(createPublisherRequestDTO, publisherModel);
+        BeanUtils.copyProperties(updatePublisherRequestDTO, publisherModel);
         return ResponseEntity.status(HttpStatus.OK).body(publisherRepository.save(publisherModel));
     }
 
     public ResponseEntity<Object> delete(int id){
         Optional<PublisherModel> response = publisherRepository.findById(id);
-        if(response.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Renter not found");
-        }
-        publisherRepository.delete(response.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Renter deleted successfully");
+        if (response.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Publisher not found");
+
+        PublisherModel publisher = response.get();
+
+        publisher.setDeleted(true);
+
+        publisherRepository.save(publisher);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Publisher deleted successfully");
     }
 }

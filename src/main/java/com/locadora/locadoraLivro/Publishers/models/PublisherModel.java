@@ -28,12 +28,14 @@ public class PublisherModel implements UserDetails {
     private String email;
     private String telephone;
     private String site;
+    private boolean isDeleted;
 
     public PublisherModel(String name, String email, String telephone, String site) {
         this.name = name;
         this.email = email;
         this.telephone = telephone;
         this.site = site;
+        this.isDeleted = false;
     }
 
     @Override

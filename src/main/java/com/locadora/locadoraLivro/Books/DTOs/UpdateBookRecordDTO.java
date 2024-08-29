@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record CreateBookRequestDTO(
+public record UpdateBookRecordDTO(
         @NotBlank(message = "The name cannot be empty") String name,
         @NotBlank(message = "The author cannot be empty") String author,
         @NotNull(message = "The launch date cannot be empty") @JsonFormat(pattern = "yyyy-MM-dd") LocalDate launchDate,

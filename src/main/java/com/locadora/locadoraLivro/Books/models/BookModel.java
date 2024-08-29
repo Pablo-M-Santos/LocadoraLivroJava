@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.locadora.locadoraLivro.Publishers.models.PublisherModel;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -20,18 +22,20 @@ public class BookModel {
     private int id;
     private String name;
     private String author;
+    private LocalDate launchDate;
     private int totalQuantity;
-    private String launchDate;
+    private boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     private PublisherModel publisher;
 
-    public BookModel(String name, String author, String launchDate, int totalQuantity, PublisherModel publisher) {
+    public BookModel(String name, String author, LocalDate launchDate, int totalQuantity, PublisherModel publisher) {
         this.name = name;
         this.author = author;
-        this.totalQuantity = totalQuantity;
         this.launchDate = launchDate;
+        this.totalQuantity = totalQuantity;
         this.publisher = publisher;
+        this.isDeleted = false;
     }
 }
