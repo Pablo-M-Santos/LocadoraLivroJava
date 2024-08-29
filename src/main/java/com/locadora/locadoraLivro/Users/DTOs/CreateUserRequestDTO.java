@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateUserRequestDTO(
+
         @NotBlank(message = "The name cannot be empty or contain only spaces.")
         String name,
 

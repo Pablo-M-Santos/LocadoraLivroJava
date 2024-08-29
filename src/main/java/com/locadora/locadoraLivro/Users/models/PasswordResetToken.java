@@ -24,10 +24,9 @@ public class PasswordResetToken {
     public PasswordResetToken(String token, UserModel user) {
         this.token = token;
         this.user = user;
-        this.expiryDate = calculateExpiryDate(30); // 30 minutos, por exemplo
+        this.expiryDate = calculateExpiryDate(30);
     }
 
-    // Métodos getters e setters
 
     public Long getId() {
         return id;

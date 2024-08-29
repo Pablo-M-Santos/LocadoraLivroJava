@@ -26,6 +26,7 @@ public class UserModel implements UserDetails {
     private String name;
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 

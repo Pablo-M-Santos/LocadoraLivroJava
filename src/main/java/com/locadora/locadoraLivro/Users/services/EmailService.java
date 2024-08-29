@@ -14,8 +14,8 @@ public class EmailService {
     public void sendRecoveryEmail(String to, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
-        message.setSubject("Recuperação de Senha");
-        message.setText("Clique no seguinte link para redefinir sua senha: http://localhost:8040/reset-password?token=" + token);
+        message.setSubject("Password Recovery");
+        message.setText(token);
         emailSender.send(message);
     }
 }

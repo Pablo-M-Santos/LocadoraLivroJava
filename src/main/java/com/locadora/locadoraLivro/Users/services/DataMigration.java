@@ -20,6 +20,7 @@ public class DataMigration implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @Override
     public void run(String... args) {
         if (userRepository.count() == 0) {

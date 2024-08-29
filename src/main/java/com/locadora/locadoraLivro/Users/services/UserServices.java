@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -101,25 +100,20 @@ public class UserServices {
 
         UserModel user = userOptional.get();
 
-        // Verifica se já existe um token para o usuário
         PasswordResetToken existingToken = resetTokenRepository.findByUser(user);
         if (existingToken != null) {
-            // Se o token já existir e não estiver expirado, retorna o token existente
             if (!existingToken.isExpired()) {
                 return existingToken.getToken();
             }
-            // Caso o token esteja expirado, exclui o token antigo
             resetTokenRepository.delete(existingToken);
         }
 
-        // Cria um novo token
         String token = UUID.randomUUID().toString();
         PasswordResetToken newToken = new PasswordResetToken(token, user);
         resetTokenRepository.save(newToken);
 
         return token;
     }
-
 
 
     public boolean validatePasswordResetToken(String token) {
@@ -137,7 +131,6 @@ public class UserServices {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
-        // Exclui o token após a redefinição da senha
         resetTokenRepository.delete(resetToken);
 
         return true;
