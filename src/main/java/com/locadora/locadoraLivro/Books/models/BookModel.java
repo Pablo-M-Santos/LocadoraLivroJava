@@ -24,6 +24,8 @@ public class BookModel {
     private String author;
     private LocalDate launchDate;
     private int totalQuantity;
+    private Integer availableQuantity;
+    private Integer inUseQuantity;
     private boolean isDeleted;
 
     @ManyToOne
