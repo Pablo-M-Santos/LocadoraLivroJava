@@ -1,4 +1,4 @@
-package com.locadora.locadoraLivro.Users.models;
+package com.locadora.locadoraLivro.Users.DTOs;
 
 public class EmailRequest {
 

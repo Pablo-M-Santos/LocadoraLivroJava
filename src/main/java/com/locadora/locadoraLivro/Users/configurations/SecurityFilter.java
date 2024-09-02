@@ -1,6 +1,7 @@
 package com.locadora.locadoraLivro.Users.configurations;
 
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
+import com.locadora.locadoraLivro.Users.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

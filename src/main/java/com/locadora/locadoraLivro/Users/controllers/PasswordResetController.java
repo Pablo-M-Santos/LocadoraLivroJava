@@ -1,7 +1,8 @@
 package com.locadora.locadoraLivro.Users.controllers;
 
-import com.locadora.locadoraLivro.Users.models.EmailRequest;
-import com.locadora.locadoraLivro.Users.models.PasswordResetRequest;
+import com.locadora.locadoraLivro.Users.DTOs.EmailRequest;
+import com.locadora.locadoraLivro.Users.DTOs.PasswordResetRequest;
+import com.locadora.locadoraLivro.Users.DTOs.TokenValidationRequest;
 import com.locadora.locadoraLivro.Users.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,8 +58,9 @@ public class PasswordResetController {
     }
 
 
-    @GetMapping("/reset-password/validate")
-    public ResponseEntity<String> validateResetToken(@RequestParam("token") String token) {
+    @PostMapping("/reset-password/validate")
+    public ResponseEntity<String> validateResetToken(@RequestBody TokenValidationRequest request) {
+        String token = request.getToken();
         boolean isValid = userServices.validatePasswordResetToken(token);
         if (!isValid) {
             return ResponseEntity.badRequest().body("Token inválido ou expirado.");

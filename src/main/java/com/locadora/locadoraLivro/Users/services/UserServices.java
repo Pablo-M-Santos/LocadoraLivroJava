@@ -6,7 +6,7 @@ import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
 import com.locadora.locadoraLivro.Users.Validation.UserValidation;
 import com.locadora.locadoraLivro.Users.mappers.UserMapper;
-import com.locadora.locadoraLivro.Users.models.PasswordResetToken;
+import com.locadora.locadoraLivro.Users.DTOs.PasswordResetToken;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.PasswordResetTokenRepository;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
@@ -100,13 +100,16 @@ public class UserServices {
 
         UserModel user = userOptional.get();
 
+
         PasswordResetToken existingToken = resetTokenRepository.findByUser(user);
         if (existingToken != null) {
-            if (!existingToken.isExpired()) {
+            if (existingToken.isExpired()) {
+                resetTokenRepository.delete(existingToken);
+            } else {
                 return existingToken.getToken();
             }
-            resetTokenRepository.delete(existingToken);
         }
+
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken newToken = new PasswordResetToken(token, user);
@@ -117,12 +120,28 @@ public class UserServices {
 
 
     public boolean validatePasswordResetToken(String token) {
+        System.out.println("Token recebido para validação: '" + token + "'");
+
         PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
-        return resetToken != null && !resetToken.isExpired();
+
+        if (resetToken == null) {
+            System.out.println("Token não encontrado: " + token);
+            return false;
+        }
+
+        System.out.println("Token encontrado: " + resetToken.getToken());
+        if (resetToken.isExpired()) {
+            System.out.println("Token expirado: " + resetToken.getExpiryDate());
+            return false;
+        }
+
+        return true;
     }
+
 
     public boolean resetPassword(String token, String newPassword) {
         PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
+
         if (resetToken == null || resetToken.isExpired()) {
             return false;
         }

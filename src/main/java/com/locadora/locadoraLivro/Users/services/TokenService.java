@@ -1,4 +1,4 @@
-package com.locadora.locadoraLivro.Users.configurations;
+package com.locadora.locadoraLivro.Users.services;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

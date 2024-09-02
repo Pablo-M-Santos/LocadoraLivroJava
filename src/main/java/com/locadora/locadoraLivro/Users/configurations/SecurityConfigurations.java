@@ -32,6 +32,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/forgot").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reset-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/reset-password/validate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
