@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Component
 public class BookRentMapper {
@@ -25,6 +26,6 @@ public class BookRentMapper {
 
     private BooksMoreRented toBooksMoreRented(BookModel book) {
         int rentCount = rentRepository.findAllByBookId(book.getId()).size();
-        retunr new BooksMoreRented(book.getName(), rentCount);
+        return new BooksMoreRented(book.getName(), rentCount);
     }
 }

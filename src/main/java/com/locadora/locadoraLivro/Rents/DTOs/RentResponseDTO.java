@@ -6,8 +6,13 @@ import com.locadora.locadoraLivro.Books.models.BookModel;
 import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import com.locadora.locadoraLivro.Rents.models.RentStatusEnum;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record RentResponseDTO(

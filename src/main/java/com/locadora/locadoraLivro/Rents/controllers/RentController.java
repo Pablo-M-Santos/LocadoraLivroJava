@@ -2,6 +2,7 @@ package com.locadora.locadoraLivro.Rents.controllers;
 
 import com.locadora.locadoraLivro.Rents.DTOs.CreateRentRequestDTO;
 import com.locadora.locadoraLivro.Rents.DTOs.RentResponseDTO;
+import com.locadora.locadoraLivro.Rents.DTOs.UpdateRentRecordDTO;
 import com.locadora.locadoraLivro.Rents.mappers.RentMapper;
 import com.locadora.locadoraLivro.Rents.services.RentServices;
 import jakarta.validation.Valid;
@@ -40,6 +41,12 @@ public class RentController {
     @PutMapping("/rent/{id}")
     public ResponseEntity<Object> update(
             @PathVariable int id) {
-        return rentServices.update(id);
+        return rentServices.delivered(id);
+    }
+
+    @PutMapping("/rent/update/{id}")
+    public ResponseEntity<Object> update(
+            @PathVariable int id, @RequestBody @Valid UpdateRentRecordDTO data) {
+        return rentServices.update(id,data);
     }
 }
