@@ -24,11 +24,9 @@ public class PasswordResetController {
     @PostMapping("/forgot")
     public ResponseEntity<String> processForgotPassword(@RequestBody EmailRequest emailRequestDTO) {
         String email = emailRequestDTO.getEmail();
-        System.out.println("Recebido e-mail: " + email);
 
         String token = userServices.createPasswordResetToken(email);
         if (token == null) {
-            System.out.println("Token não gerado. Usuário não encontrado.");
             return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
 

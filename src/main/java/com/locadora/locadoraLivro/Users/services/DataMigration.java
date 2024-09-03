@@ -27,7 +27,6 @@ public class DataMigration implements CommandLineRunner {
             String encodedPassword = passwordEncoder.encode("12345678");
             UserModel admin = new UserModel("admin", "admin@example.com", encodedPassword, UserRoleEnum.ADMIN);
             userRepository.save(admin);
-            System.out.println("Admin user created.");
         }
     }
 }

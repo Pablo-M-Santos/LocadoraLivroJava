@@ -120,18 +120,18 @@ public class UserServices {
 
 
     public boolean validatePasswordResetToken(String token) {
-        System.out.println("Token recebido para validação: '" + token + "'");
+
 
         PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
 
         if (resetToken == null) {
-            System.out.println("Token não encontrado: " + token);
+
             return false;
         }
 
-        System.out.println("Token encontrado: " + resetToken.getToken());
+
         if (resetToken.isExpired()) {
-            System.out.println("Token expirado: " + resetToken.getExpiryDate());
+
             return false;
         }
 
