@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
+import com.locadora.locadoraLivro.Users.services.EmailService;
 
 
 @RestController
@@ -21,6 +22,9 @@ public class PasswordResetController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private EmailService emailService;
+
     @PostMapping("/forgot")
     public ResponseEntity<String> processForgotPassword(@RequestBody EmailRequest emailRequestDTO) {
         String email = emailRequestDTO.getEmail();
@@ -30,14 +34,9 @@ public class PasswordResetController {
             return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
 
-        String resetLink = "http://localhost:9000/api/reset-password?token=" + token;
+        String resetLink = token;
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Redefinição de senha");
-        message.setText("Clique no link para redefinir sua senha: " + resetLink);
-
-        mailSender.send(message);
+        emailService.sendCustomEmail(email, "Usuário", resetLink);
 
         return ResponseEntity.ok("Instruções de redefinição de senha enviadas para " + email);
     }
