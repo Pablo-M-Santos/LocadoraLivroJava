@@ -13,6 +13,7 @@ import com.locadora.locadoraLivro.Users.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,7 +44,7 @@ public class UserServices {
     @Autowired
     private PasswordResetTokenRepository resetTokenRepository;
 
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateUserRequestDTO data) {
+    public ResponseEntity<Void> create(@Valid CreateUserRequestDTO data) {
         userEmailValidation.validateEmail(data);
 
         String encryptedPassword = passwordEncoder.encode(data.password());
@@ -52,10 +54,15 @@ public class UserServices {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public List<UserModel> findAll() {
-        List<UserModel> users = userRepository.findAll();
-        if (users.isEmpty()) throw new ModelNotFoundException();
-        return users;
+    public List<UserModel> findAll(String search) {
+        if (Objects.equals(search, "")){
+            List<UserModel> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            if (users.isEmpty()) throw new ModelNotFoundException();
+            return users;
+        } else {
+            List<UserModel> userByName = userRepository.findAllByName(search);
+            return userByName;
+        }
     }
 
     public Optional<UserModel> findById(int id) {
@@ -100,7 +107,6 @@ public class UserServices {
 
         UserModel user = userOptional.get();
 
-
         PasswordResetToken existingToken = resetTokenRepository.findByUser(user);
         if (existingToken != null) {
             if (existingToken.isExpired()) {
@@ -109,7 +115,6 @@ public class UserServices {
                 return existingToken.getToken();
             }
         }
-
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken newToken = new PasswordResetToken(token, user);
@@ -120,18 +125,12 @@ public class UserServices {
 
 
     public boolean validatePasswordResetToken(String token) {
-
-
         PasswordResetToken resetToken = resetTokenRepository.findByToken(token);
-
         if (resetToken == null) {
-
             return false;
         }
 
-
         if (resetToken.isExpired()) {
-
             return false;
         }
 

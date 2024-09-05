@@ -33,7 +33,7 @@ public class PublisherServices {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public List<PublisherModel> findAll() {
+    public List<PublisherModel> findAll(String search) {
         List<PublisherModel> publisher = publisherRepository.findAllByIsDeletedFalse();
         if (publisher.isEmpty()) throw new ModelNotFoundException();
         return publisher;

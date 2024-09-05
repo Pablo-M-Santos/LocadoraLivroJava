@@ -2,18 +2,18 @@ package com.locadora.locadoraLivro.Rents.services;
 
 import com.locadora.locadoraLivro.Books.models.BookModel;
 import com.locadora.locadoraLivro.Exceptions.ModelNotFoundException;
-import com.locadora.locadoraLivro.Renters.models.RenterModel;
 import com.locadora.locadoraLivro.Rents.DTOs.CreateRentRequestDTO;
 import com.locadora.locadoraLivro.Rents.DTOs.UpdateRentRecordDTO;
 import com.locadora.locadoraLivro.Rents.Validation.RentValidation;
 import com.locadora.locadoraLivro.Rents.models.RentModel;
-import com.locadora.locadoraLivro.Rents.models.RentStatusEnum;
 import com.locadora.locadoraLivro.Rents.repositories.RentRepository;
+import com.locadora.locadoraLivro.Renters.models.RenterModel;
+import com.locadora.locadoraLivro.Rents.models.RentStatusEnum;
 import com.locadora.locadoraLivro.Books.repositories.BookRepository;
 import com.locadora.locadoraLivro.Renters.repositories.RenterRepository;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,9 +63,8 @@ public class RentServices {
     }
 
     public List<RentModel> findAll() {
-        List<RentModel> rents = rentRepository.findAll();
+        List<RentModel> rents = rentRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         if (rents.isEmpty()) throw new ModelNotFoundException();
-
         for (RentModel rent : rents) { rentValidation.setRentStatus(rent); }
 
         return rents;

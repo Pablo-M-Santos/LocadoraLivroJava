@@ -3,7 +3,6 @@ package com.locadora.locadoraLivro.Rents.repositories;
 import com.locadora.locadoraLivro.Rents.models.RentModel;
 import com.locadora.locadoraLivro.Rents.models.RentStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

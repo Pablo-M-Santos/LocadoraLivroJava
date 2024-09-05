@@ -2,8 +2,8 @@ package com.locadora.locadoraLivro.Rents.controllers;
 
 import com.locadora.locadoraLivro.Rents.DTOs.CreateRentRequestDTO;
 import com.locadora.locadoraLivro.Rents.DTOs.RentResponseDTO;
-import com.locadora.locadoraLivro.Rents.DTOs.UpdateRentRecordDTO;
 import com.locadora.locadoraLivro.Rents.mappers.RentMapper;
+import com.locadora.locadoraLivro.Rents.DTOs.UpdateRentRecordDTO;
 import com.locadora.locadoraLivro.Rents.services.RentServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
