@@ -32,7 +32,8 @@ public class BookMapper {
                 .author(model.getAuthor())
                 .launchDate(model.getLaunchDate())
                 .totalQuantity(model.getTotalQuantity())
-                .publisher(publisherResponseDTO)
+                .publisher(model.getPublisher())
+                .totalInUse(model.getTotalInUse())
                 .build();
     }
 }

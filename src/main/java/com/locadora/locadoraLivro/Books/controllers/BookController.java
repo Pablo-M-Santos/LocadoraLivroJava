@@ -24,27 +24,27 @@ public class BookController {
     BookServices bookServices;
 
     @PostMapping("/book")
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateBookRequestDTO data){
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateBookRequestDTO data) {
         return bookServices.create(data);
     }
 
     @GetMapping("/book")
-    public ResponseEntity<List<BookResponseDTO>> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(bookMapper.toBookResponseList(bookServices.findAll()));
+    public ResponseEntity<List<BookResponseDTO>> getAll(String search) {
+        return ResponseEntity.status(HttpStatus.OK).body(bookMapper.toBookResponseList(bookServices.findAll(search)));
     }
 
     @GetMapping("/book/{id}")
-    public ResponseEntity<BookResponseDTO> getById(@PathVariable(value = "id") int id){
+    public ResponseEntity<BookResponseDTO> getById(@PathVariable(value = "id") int id) {
         return ResponseEntity.status(HttpStatus.OK).body(bookMapper.toBookResponse(bookServices.findById(id).get()));
     }
 
     @PutMapping("/book/{id}")
-    public ResponseEntity<Object> update(@PathVariable(value="id") int id, @RequestBody @Valid UpdateBookRecordDTO updateBookRecordDTO){
+    public ResponseEntity<Object> update(@PathVariable(value = "id") int id, @RequestBody @Valid UpdateBookRecordDTO updateBookRecordDTO) {
         return bookServices.update(id, updateBookRecordDTO);
     }
 
     @DeleteMapping("/book/{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value="id") int id){
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") int id) {
         return bookServices.delete(id);
     }
 }

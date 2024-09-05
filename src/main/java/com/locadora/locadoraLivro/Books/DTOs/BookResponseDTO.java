@@ -1,7 +1,7 @@
 package com.locadora.locadoraLivro.Books.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.locadora.locadoraLivro.Publishers.DTOs.PublisherResponseDTO;
+import com.locadora.locadoraLivro.Publishers.models.PublisherModel;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ public record BookResponseDTO(
         String author,
         @JsonFormat(pattern = "yyyy-MM-dd") LocalDate launchDate,
         int totalQuantity,
-        PublisherResponseDTO publisher
+        int totalInUse,
+        PublisherModel publisher
 ) {
 }

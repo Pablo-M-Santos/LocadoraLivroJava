@@ -1,6 +1,5 @@
-package com.locadora.locadoraLivro.Users.DTOs;
+package com.locadora.locadoraLivro.Users.models;
 
-import com.locadora.locadoraLivro.Users.models.UserModel;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

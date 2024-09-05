@@ -38,21 +38,21 @@ public class DashboardServices {
     }
 
     public int getNumberOfRentalsLate(){
-        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.LATE);
+        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.ATRASADO);
         int rentsLate = totalRentsLate.size();
 
         return rentsLate;
     }
 
     public int getDeliveredInTime(){
-        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.IN_TIME);
+        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.NO_PRAZO);
         int rentsInTime = totalRentsLate.size();
 
         return rentsInTime;
     }
 
     public int getDeliveredWithDelay(){
-        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.DELIVERED_WITH_DELAY);
+        List<RentModel> totalRentsLate = rentRepository.findAllByStatus(RentStatusEnum.ENTREGUE_COM_ATRASO);
         int rentsWithDelay = totalRentsLate.size();
 
         return rentsWithDelay;
@@ -64,7 +64,7 @@ public class DashboardServices {
 
         for (RenterModel renter : renters) {
             List<RentModel> rents = rentRepository.findAllByRenterId(renter.getId());
-            List<RentModel> rentsActive = rentRepository.findAllByRenterIdAndStatus(renter.getId(), RentStatusEnum.RENTED);
+            List<RentModel> rentsActive = rentRepository.findAllByRenterIdAndStatus(renter.getId(), RentStatusEnum.ALUGADO);
             renterRentList.add(new RentsperRenterResponseDTO(renter.getName(), rents.size(), rentsActive.size()));
         }
 

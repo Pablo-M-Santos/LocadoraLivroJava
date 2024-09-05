@@ -1,6 +1,6 @@
 package com.locadora.locadoraLivro.Users.repositories;
 
-import com.locadora.locadoraLivro.Users.DTOs.PasswordResetToken;
+import com.locadora.locadoraLivro.Users.models.PasswordResetToken;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 

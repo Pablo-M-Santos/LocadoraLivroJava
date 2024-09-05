@@ -1,12 +1,11 @@
 package com.locadora.locadoraLivro.Users.controllers;
 
-import com.locadora.locadoraLivro.Users.DTOs.EmailRequest;
-import com.locadora.locadoraLivro.Users.DTOs.PasswordResetRequest;
-import com.locadora.locadoraLivro.Users.DTOs.TokenValidationRequest;
+import com.locadora.locadoraLivro.Users.models.EmailRequest;
+import com.locadora.locadoraLivro.Users.models.PasswordResetRequest;
+import com.locadora.locadoraLivro.Users.models.TokenValidationRequest;
 import com.locadora.locadoraLivro.Users.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import com.locadora.locadoraLivro.Users.services.EmailService;
@@ -34,9 +33,14 @@ public class PasswordResetController {
             return ResponseEntity.badRequest().body("Usuário não encontrado.");
         }
 
+        String userName = userServices.getUserNameByEmail(email);
+        if (userName == null) {
+            return ResponseEntity.badRequest().body("Nome do usuário não encontrado.");
+        }
+
         String resetLink = token;
 
-        emailService.sendCustomEmail(email, "Usuário", resetLink);
+        emailService.sendCustomEmail(email, userName, resetLink);
 
         return ResponseEntity.ok("Instruções de redefinição de senha enviadas para " + email);
     }

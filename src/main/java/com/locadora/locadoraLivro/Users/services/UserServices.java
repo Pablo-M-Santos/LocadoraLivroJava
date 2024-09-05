@@ -6,7 +6,7 @@ import com.locadora.locadoraLivro.Users.DTOs.UpdateUserRequestDTO;
 import com.locadora.locadoraLivro.Users.DTOs.UserResponseDTO;
 import com.locadora.locadoraLivro.Users.Validation.UserValidation;
 import com.locadora.locadoraLivro.Users.mappers.UserMapper;
-import com.locadora.locadoraLivro.Users.DTOs.PasswordResetToken;
+import com.locadora.locadoraLivro.Users.models.PasswordResetToken;
 import com.locadora.locadoraLivro.Users.models.UserModel;
 import com.locadora.locadoraLivro.Users.repositories.PasswordResetTokenRepository;
 import com.locadora.locadoraLivro.Users.repositories.UserRepository;
@@ -153,6 +153,15 @@ public class UserServices {
         resetTokenRepository.delete(resetToken);
 
         return true;
+    }
+
+
+    public String getUserNameByEmail(String email) {
+        UserModel user = userRepository.findByEmail(email);
+        if (user != null) {
+            return user.getName();
+        }
+        return null;
     }
 
 }

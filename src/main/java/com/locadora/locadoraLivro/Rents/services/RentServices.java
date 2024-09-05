@@ -51,7 +51,7 @@ public class RentServices {
         rentValidation.validateDeadLine(data);
 
         RentModel newRent = new RentModel(renter, book, data.deadLine());
-        newRent.setStatus(RentStatusEnum.RENTED);
+        newRent.setStatus(RentStatusEnum.ALUGADO);
         rentRepository.save(newRent);
 
         rentValidation.validateBookTotalQuantity(book);

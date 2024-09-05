@@ -1,4 +1,4 @@
-package com.locadora.locadoraLivro.Users.DTOs;
+package com.locadora.locadoraLivro.Users.models;
 
 public class PasswordResetRequest {
     private String token;
